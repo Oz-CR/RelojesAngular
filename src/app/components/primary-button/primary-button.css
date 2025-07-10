@@ -1,0 +1,23 @@
+.primary-btn {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #000a;
+  background: #1b85ff;
+  color: #111;
+}
+
+.primary-btn:hover {
+  background: #3614d0;
+}
+
+.primary-btn:disabled {
+    background-color: #2c3c31;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

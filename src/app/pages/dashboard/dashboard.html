@@ -1,0 +1,40 @@
+<div class="main-container">
+    <app-card title="Control de Relojes">
+        <div class="flex justify-between items-center mb-6">
+            <p class="text-gray-700">Gestiona tus relojes personalizados</p>
+            <app-primary-button (clicked)="openModal()">
+                {{ buttonText }}
+            </app-primary-button>
+        </div>
+        
+        <app-modal-comp 
+            [isOpen]="modalOpen" 
+            (close)="closeModal()" 
+            (createClock)="addClock($event)">
+        </app-modal-comp>
+        
+        <div class="flex flex-col items-center" *ngIf="clocks.length > 0">
+            <div class="grid grid-cols-1 gap-8 w-full max-w-4xl">
+                <app-clock-comp
+                    *ngFor="let clock of clocks; index as i"
+                    [startTime]="clock.startTime"
+                    [bgColor]="clock.bgColor"
+                    [numberColor]="clock.numberColor"
+                    [labelColor]="clock.labelColor"
+                    [hourHandColor]="clock.hourHandColor"
+                    [minuteHandColor]="clock.minuteHandColor"
+                    [speed]="clock.speed || 1"
+                    (removeClock)="removeClock(i)"
+                    (updateColors)="updateClockColors(i, $event)"
+                    (updateTime)="updateClockTime(i, $event)"
+                    class="mx-auto">
+                </app-clock-comp>
+            </div>
+        </div>
+        
+        <div *ngIf="clocks.length === 0" class="text-center py-12">
+            <p class="text-gray-500 text-lg">No hay relojes creados</p>
+            <p class="text-gray-400">Haz clic en "Crear Reloj" para empezar</p>
+        </div>
+    </app-card>
+</div>

@@ -1,0 +1,97 @@
+<div class="clock-wrapper">
+  <div class="absolute top-0 right-0 flex space-x-2 transform translate-y-up">
+    <button (click)="openEditColorsModal()" class="edit-btn bg-blue-500 text-white p-1 rounded-full">
+      🎨
+    </button>
+    <button (click)="openEditTimeModal()" class="edit-btn bg-green-500 text-white p-1 rounded-full">
+      ⏱️
+    </button>
+    <button (click)="onRemoveClock()" class="delete-btn bg-red-500 text-white p-1 rounded-full">
+      🗑️
+    </button>
+  </div>
+
+  <div *ngIf="showColorsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-sm w-full mx-4">
+      <h3 class="text-lg font-bold mb-4">Editar Colores</h3>
+      <div class="space-y-4">
+        <div>
+          <label>Color de fondo:</label>
+          <input type="color" [(ngModel)]="tempBgColor" (input)="onColorChange()">
+        </div>
+        <div>
+          <label>Color de números:</label>
+          <input type="color" [(ngModel)]="tempNumberColor" (input)="onColorChange()">
+        </div>
+        <div>
+          <label>Color de etiqueta:</label>
+          <input type="color" [(ngModel)]="tempLabelColor" (input)="onColorChange()">
+        </div>
+        <div>
+          <label>Color de manecilla de horas:</label>
+          <input type="color" [(ngModel)]="tempHourHandColor" (input)="onColorChange()">
+        </div>
+        <div>
+          <label>Color de manecilla de minutos:</label>
+          <input type="color" [(ngModel)]="tempMinuteHandColor" (input)="onColorChange()">
+        </div>
+      </div>
+      <div class="flex justify-end space-x-2 mt-6">
+        <button (click)="cancelEditColors()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+          Cancelar
+        </button>
+        <button (click)="handleSaveColors()" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showTimeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-sm w-full mx-4 relative">
+      <button 
+        type="button" 
+        (click)="cancelEditTime()"
+        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl font-bold w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100">
+        ×
+      </button>
+      <h3 class="text-lg font-bold mb-4">Editar Tiempo</h3>
+      <div class="space-y-4">
+        <div>
+          <label>Nueva hora:</label>
+          <input type="time" [value]="currentTimeForInput" (input)="onTimeChange($event)" class="w-full border rounded p-2">
+        </div>
+        <div>
+          <label>Velocidad (1x = normal):</label>
+          <input type="range" [(ngModel)]="speed" (input)="onSpeedChange($event)" min="0.1" max="10" step="0.1" class="w-full">
+          <span>{{ speed }}x</span>
+        </div>
+      </div>
+      <div class="flex justify-end space-x-2 mt-6">
+        <button (click)="cancelEditTime()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">
+          Cancelar
+        </button>
+        <button (click)="handleSaveTime({newTime: currentTimeForInput, newSpeed: speed})" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="clock-container">
+    <div class="clock" [ngStyle]="{ 'background-color': bgColor }">
+      <div class="hand hour-hand" [ngStyle]="{ transform: 'rotate(' + clock.hourDeg + 'deg)', 'background-color': hourHandColor }"></div>
+      <div class="hand minute-hand" [ngStyle]="{ transform: 'rotate(' + clock.minuteDeg + 'deg)', 'background-color': minuteHandColor }"></div>
+      <div class="hand second-hand" [ngStyle]="{ transform: 'rotate(' + clock.secondDeg + 'deg)' }"></div>
+      <div 
+        *ngFor="let num of [1,2,3,4,5,6,7,8,9,10,11,12]; index as i" 
+        class="number number-{{i+1}}" 
+        [ngStyle]="{ color: numberColor }">
+        {{ num }}
+      </div>
+    </div>
+    <div class="time-label" [ngStyle]="{ color: labelColor }">
+      {{ currentTimeDisplay }} (x{{ speed }})
+    </div>
+  </div>
+</div>
